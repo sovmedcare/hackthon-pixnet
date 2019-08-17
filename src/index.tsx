@@ -1,17 +1,32 @@
 import React, { useState } from 'react'
 import { render } from 'react-dom'
+import { find, equals } from 'ramda'
 import { hot } from 'react-hot-loader'
-import ImageSelector from './components/ImageSelector'
-import RecommendResult from './components/RecommendResult'
+import ImageContainer from './components/ImageSelector'
+import data from "../static/food_merged.json"
 import './index.less'
 
+export const getRandomItem = (data: any) => data[Math.floor(Math.random() * data.length)]
+
+const getNineItems = (data: any) => {
+  let arr = []
+  while (arr.length !== 9 ) {
+    let item = getRandomItem(data)
+    if (!find(equals(item), arr)) {
+      arr.push(item)
+    }
+  }
+  return arr
+}
+
 const Index = () => {
-  const [selectedLabels, setSelectedLabels] = useState<string[]>([])
+
+  const [items, setItems] = useState(getNineItems(data))
   return (
     <div>
       <h1>食字路口</h1>
-      <ImageSelector setSelectedLabels={setSelectedLabels} />
-      <RecommendResult selectedLabels={selectedLabels} />
+      <ImageContainer items={items} setItems={setItems}/>
+      {/* <RecommendResult selectedLabels={selectedLabels} /> */}
     </div>
   )
 }
