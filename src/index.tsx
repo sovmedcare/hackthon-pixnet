@@ -25,11 +25,12 @@ const getNineItems = (data: any) => {
 const Index = () => {
 
   const [items, setItems] = useState(getNineItems(data))
+  const [tags, setTags] = useState<string[]>([])
   return (
     <div>
       <h1>食字路口</h1>
-      <ImageContainer items={items} setItems={setItems}/>
-      {/* <RecommendResult selectedLabels={selectedLabels} /> */}
+      <ImageContainer items={items} setItems={setItems} setTags={setTags}/>
+      <RecommendResult selectedLabels={tags} />
     </div>
   )
 }
