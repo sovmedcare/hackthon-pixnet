@@ -12,7 +12,8 @@ interface Item {
 }
 interface ImageSelectorContainerProps {
   items: Item[],
-  setItems: React.Dispatch<React.SetStateAction<Item[]>> 
+  setItems: React.Dispatch<React.SetStateAction<Item[]>>,
+  setTags: (tags: string[]) => void
 }
 
 interface ImageCardProps {
@@ -46,7 +47,8 @@ const SelectedImageCard = ({item}: SelectedImageCardProps) => {
 
 export const ImageContainer = ({
   items,
-  setItems
+  setItems,
+  setTags
 }: ImageSelectorContainerProps) => {
 
   const [ selectedImages, setSelectedImages ] = useState<Item[]>([])
@@ -67,7 +69,11 @@ export const ImageContainer = ({
 
   const handleSubmit = () => {
     const suggestedTags = flatten(map(image => image.labels, selectedImages))
-    console.log(suggestedTags)
+    setTags(suggestedTags)
+  }
+  
+  const handleRefresh = () => {
+    setSelectedImages([])
   }
 
 
@@ -83,6 +89,9 @@ export const ImageContainer = ({
       </div>
       <Button type='primary' disabled={length(selectedImages) !== 3} onClick={handleSubmit}>
         開始推薦文章
+      </Button>
+      <Button type='default' style={{ marginLeft: '10px' }} disabled={length(selectedImages) !== 3} onClick={handleRefresh}>
+        重新選擇
       </Button>
     </div>
   )
