@@ -1,8 +1,15 @@
 import React from 'react'
-import { render } from 'react-dom'
 import { hot } from 'react-hot-loader'
-import App from './App'
+import ImageSelector from './components/ImageSelector'
+import RecommendResult from './components/RecommendResult'
+import './index.less'
 
-render(<App />, document.getElementById('root'))
+const Index = () => {
+  return <div>
+    <h1>食字路口</h1>
+    <ImageSelector />
+    <RecommendResult />
+  </div>
+}
 
-export default hot(module)(App)
+export default hot(module)(Index)

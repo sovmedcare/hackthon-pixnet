@@ -1,8 +1,5 @@
 import * as React from 'react'
 import { render } from 'react-dom'
+import Index from './Index'
 
-import App from './App'
-
-import './global.css'
-
-render(<App />, document.getElementById('root'))
+render(<Index />, document.getElementById('root'))
