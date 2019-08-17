@@ -21,6 +21,7 @@
     "watch:popup": "parcel watch src/popup.tsx -o popup.js --public-url='/'"
   },
   "dependencies": {
+    "@types/ramda": "^0.26.19",
     "antd": "^3.21.4",
     "qs": "^6.8.0",
     "ramda": "^0.26.1",
