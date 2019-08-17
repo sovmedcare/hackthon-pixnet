@@ -46,7 +46,7 @@ const columns = [
 const apiURL = 'https://emma.pixnet.cc/blog/articles/search'
 const defaultQuery = {
   format: 'json',
-  type: 'tag',
+  type: 'keyword',
   /** id 26 代表美味食記這個分類
    * 參考: https://developer.pixnet.pro/#!/doc/pixnetApi/blogSiteCategoriesArticle
    */
