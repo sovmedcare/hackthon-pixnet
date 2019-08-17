@@ -60,5 +60,9 @@ typings/
 # next.js build output
 .next
 
-.cache
+# mac OS files
+.DS_Store
+
+# parcel build files
 dist
+.cache

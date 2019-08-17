@@ -21,7 +21,7 @@ const columns = [
 ]
 
 const RecommendResult = () => {
-  const dataSource = []
+  const dataSource = [] as any
 
   return <div className='recommend-result'>
     <h3>最適合你的是...</h3>

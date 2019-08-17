@@ -2,7 +2,7 @@ import React from 'react'
 import './ImageSelector.less'
 
 const ImageSelector = () => {
-  const handleClick = id => {
+  const handleClick = (id: any) => {
     console.log(id)
   }
 
