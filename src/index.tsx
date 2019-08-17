@@ -35,5 +35,8 @@ const Index = () => {
   )
 }
 
-render(<Index />, document.getElementById('root'))
+if (process.env.NODE_ENV === 'DEV') {
+  render(<Index />, document.getElementById('root'))
+}
+
 export default hot(module)(Index)
