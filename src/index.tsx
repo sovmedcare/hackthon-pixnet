@@ -1,13 +1,8 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { hot } from 'react-hot-loader'
+import App from './App'
 
-const Index = () => {
-  return <div>
-    hellp my app
-  </div>
-}
+render(<App />, document.getElementById('root'))
 
-render(<Index />, document.getElementById('root'))
-
-export default hot(module)(Index)
+export default hot(module)(App)

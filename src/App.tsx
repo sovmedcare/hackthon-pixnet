@@ -1,27 +1,23 @@
-import * as React from 'react'
+import React, { useState } from 'react'
 
 import './global.css'
 import './App.css'
 
-class App extends React.Component {
-  public render() {
-    return (
-      <div className='container'>
-        <img src='images/logo.svg' className='logo' alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className='link'
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </div>
-    )
+const App = () => {
+  const a = useState('a')
+
+  const handleA = async () => {
+    await console.log(a)
   }
+
+  return (
+    <div className='container'>
+      <img src='images/logo.svg' className='logo' alt="logo" />
+      <button onClick={handleA}>
+        Click handler test
+      </button>
+    </div>
+  )
 }
 
 export default App
