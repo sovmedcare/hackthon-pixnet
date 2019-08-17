@@ -13,6 +13,7 @@
     "build:popup": "parcel build src/popup.tsx -o popup.js --public-url='/'",
     "clean": "rm -rf dist",
     "copy-static": "cp -r static/ dist/",
+    "dev": "parcel src/index.html",
     "start": "yarn clean && yarn copy-static && yarn watch:all",
     "watch:all": "yarn watch:background & yarn watch:contentscript & yarn watch:popup",
     "watch:contentscript": "parcel watch src/contentscript.ts -o contentscript.js",
@@ -27,6 +28,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
+    "@babel/plugin-transform-runtime": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
     "@types/chrome": "^0.0.88",
