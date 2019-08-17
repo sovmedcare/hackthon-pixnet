@@ -5,6 +5,19 @@
   "repository": "https://github.com/sovmedcare/hackthon-pixnet",
   "author": "jackypan1989 <jackypan1989@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "start": "yarn clean && yarn copy-static && yarn watch:all",
+    "build": "yarn clean && yarn build:all && yarn copy-static",
+    "build:all": "yarn build:background & yarn build:contentscript & yarn build:popup",
+    "build:contentscript": "parcel build src/contentscript.ts -o contentscript.js",
+    "build:background": "parcel build src/background.ts -o background.js",
+    "build:popup": "parcel build src/popup.tsx -o popup.js --public-url='/'",
+    "watch:all": "yarn watch:background & yarn watch:contentscript & yarn watch:popup & npm-watch & yarn css-types -w",
+    "watch:contentscript": "parcel watch src/contentscript.ts -o contentscript.js",
+    "watch:background": "parcel watch src/background.ts -o background.js",
+    "watch:popup": "parcel watch src/index.tsx -o popup.js --public-url='/'"
+  },
   "dependencies": {
     "antd": "^3.21.4",
     "react": "^16.9.0",
