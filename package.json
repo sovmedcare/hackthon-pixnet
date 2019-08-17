@@ -6,17 +6,18 @@
   "author": "jackypan1989 <jackypan1989@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "clean": "rm -rf dist",
-    "start": "yarn clean && yarn copy-static && yarn watch:all",
     "build": "yarn clean && yarn build:all && yarn copy-static",
     "build:all": "yarn build:background & yarn build:contentscript & yarn build:popup",
     "build:contentscript": "parcel build src/contentscript.ts -o contentscript.js",
     "build:background": "parcel build src/background.ts -o background.js",
     "build:popup": "parcel build src/popup.tsx -o popup.js --public-url='/'",
-    "watch:all": "yarn watch:background & yarn watch:contentscript & yarn watch:popup & npm-watch & yarn css-types -w",
+    "clean": "rm -rf dist",
+    "copy-static": "cp -r static/ dist/",
+    "start": "yarn clean && yarn copy-static && yarn watch:all",
+    "watch:all": "yarn watch:background & yarn watch:contentscript & yarn watch:popup",
     "watch:contentscript": "parcel watch src/contentscript.ts -o contentscript.js",
     "watch:background": "parcel watch src/background.ts -o background.js",
-    "watch:popup": "parcel watch src/index.tsx -o popup.js --public-url='/'"
+    "watch:popup": "parcel watch src/popup.tsx -o popup.js --public-url='/'"
   },
   "dependencies": {
     "antd": "^3.21.4",
@@ -24,15 +25,28 @@
     "react-dom": "^16.9.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0-0",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
     "@types/chrome": "^0.0.88",
     "@types/node": "^12.7.2",
     "@types/react": "^16.9.2",
     "@types/react-dom": "^16.8.5",
+    "babel-plugin-import": "^1.12.0",
+    "husky": "^3.0.3",
     "parcel-bundler": "^1.12.3",
     "react-hot-loader": "^4.12.11",
     "tslint": "^5.18.0",
-    "typescript": "^3.5.3"
+    "typescript": "^3.5.3",
+    "web-ext-types": "^3.2.1"
+  },
+  "watch": {
+    "copy-static": {
+      "patterns": [
+        "static"
+      ],
+      "extensions": "*",
+      "quiet": false
+    }
   }
 }
