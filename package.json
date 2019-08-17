@@ -5,6 +5,21 @@
   "repository": "https://github.com/sovmedcare/hackthon-pixnet",
   "author": "jackypan1989 <jackypan1989@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "build": "yarn clean && yarn build:all && yarn copy-static",
+    "build:all": "yarn build:background & yarn build:contentscript & yarn build:popup",
+    "build:contentscript": "parcel build src/contentscript.ts -o contentscript.js",
+    "build:background": "parcel build src/background.ts -o background.js",
+    "build:popup": "parcel build src/popup.tsx -o popup.js --public-url='/'",
+    "clean": "rm -rf dist",
+    "copy-static": "cp -r static/ dist/",
+    "precommit": "lint-staged",
+    "start": "yarn clean && yarn copy-static && yarn watch:all",
+    "watch:all": "yarn watch:background & yarn watch:contentscript & yarn watch:popup",
+    "watch:contentscript": "parcel watch src/contentscript.ts -o contentscript.js",
+    "watch:background": "parcel watch src/background.ts -o background.js",
+    "watch:popup": "parcel watch src/popup.tsx -o popup.js --public-url='/'"
+  },
   "dependencies": {
     "react": "^16.9.0",
     "react-dom": "^16.9.0"
@@ -13,8 +28,20 @@
     "@types/chrome": "^0.0.88",
     "@types/react": "^16.9.2",
     "@types/react-dom": "^16.8.5",
+    "husky": "^3.0.3",
+    "lint-staged": "^9.2.1",
     "parcel-bundler": "^1.12.3",
     "tslint": "^5.18.0",
-    "typescript": "^3.5.3"
+    "typescript": "^3.5.3",
+    "web-ext-types": "^3.2.1"
+  },
+  "watch": {
+    "copy-static": {
+      "patterns": [
+        "static"
+      ],
+      "extensions": "*",
+      "quiet": false
+    }
   }
 }
