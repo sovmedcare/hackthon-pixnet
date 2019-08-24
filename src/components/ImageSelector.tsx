@@ -1,9 +1,13 @@
-import React, { useState } from "react"
 import { Button } from 'antd'
-import { without, findIndex, map, equals, update, length, flatten } from 'ramda'
-import data from "../../static/food_merged.json"
+import { equals, findIndex, flatten, isNil, length, map, reject, update, without } from 'ramda'
+import React, { useState } from 'react'
+
+import data from '../../static/food_merged.json'
+import categories from '../../static/categories.json'
+import { getTagsByLabel } from '../getTagsByLabel'
 import { getRandomItem } from '../index'
-import "./ImageSelector.less"
+
+import './ImageSelector.less'
 
 interface Item {
   worker: string,
@@ -50,7 +54,6 @@ export const ImageContainer = ({
   setItems,
   setTags
 }: ImageSelectorContainerProps) => {
-
   const [ selectedImages, setSelectedImages ] = useState<Item[]>([])
 
   const handleClick = (item: Item) => {
@@ -67,11 +70,18 @@ export const ImageContainer = ({
     })
   }
 
-  const handleSubmit = () => {
-    const suggestedTags = flatten(map(image => image.labels, selectedImages))
+  const handleSubmit = async () => {
+    const rawLabels = flatten(map(image => image.labels, selectedImages))
+    console.log(`rawLabels`, rawLabels);
+    const pixnetTagsList: string[][] = await Promise.all(
+      map(label => getTagsByLabel(label), rawLabels)
+    )
+    const pixnetTags = reject(isNil, flatten(pixnetTagsList))
+    const suggestedTags = reject(isNil, map(pixnetTag => categories[pixnetTag], pixnetTags))
+
     setTags(suggestedTags)
   }
-  
+
   const handleRefresh = () => {
     setSelectedImages([])
   }
