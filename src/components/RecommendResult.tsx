@@ -1,4 +1,4 @@
-import { Table } from 'antd'
+import { Table, Tag } from 'antd'
 import { compose, join, length, map } from 'ramda'
 import React, { useEffect, useState } from 'react'
 import qs from 'qs'
@@ -102,7 +102,7 @@ const RecommendResult = (props: { selectedLabels: string[] }) => {
   return (
       <div className="recommend-result">
         {map(label => (
-          <span key={label}>{label}</span>
+          <Tag key={label}>{label}</Tag>
         ), selectedLabels)}
         { isTouched && (
             <>
