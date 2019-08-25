@@ -1,10 +1,9 @@
 import { Button, Icon } from 'antd'
-import { equals, findIndex, flatten, isNil, length, map, reject, update, concat, none, filter, any, append } from 'ramda'
+import { equals, findIndex, flatten, isNil, length, map, reject, update, compose, none, filter, any, append, uniq } from 'ramda'
 import React, { useState } from 'react'
 
 import data from '../../static/food_merged_with_id.json'
 import categories from '../../static/categories.json'
-import { getTagsByLabel } from '../getTagsByLabel'
 
 import './ImageSelector.less'
 
@@ -88,11 +87,12 @@ export const ImageContainer = ({
 
   const handleSubmit = async () => {
     const rawLabels = flatten(map(image => image.labels, getItemsByIds(selectedItems)))
-    const pixnetTagsList: string[][] = await Promise.all(
-      map(label => getTagsByLabel(label), rawLabels)
-      )
-    const pixnetTags = reject(isNil, flatten(pixnetTagsList))
-    const suggestedTags = reject(isNil, map(pixnetTag => categories[pixnetTag], pixnetTags))
+    const getSuggestedTags = compose<string[], string[], string[], string[]>(
+      reject(isNil),
+      uniq,
+      map((label: string) => categories[label])
+    )
+    const suggestedTags = getSuggestedTags(rawLabels)
 
     setTags(suggestedTags)
   }
