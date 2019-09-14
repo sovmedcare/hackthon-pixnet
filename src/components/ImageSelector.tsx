@@ -1,11 +1,13 @@
-import { Button, Icon } from 'antd'
-import { equals, findIndex, flatten, isNil, length, map, reject, update, compose, none, filter, any, append, uniq } from 'ramda'
+import { Icon } from 'antd'
+import Button from '@material-ui/core/Button'
+import { addIndex, equals, findIndex, flatten, isNil, length, map, reject, update, compose, none, filter, any, append, uniq } from 'ramda'
 import React, { useState } from 'react'
 
 import data from '../../static/food_merged_with_id.json'
 import categories from '../../static/categories.json'
 
 import './ImageSelector.less'
+import { withStyles } from '@material-ui/core';
 
 interface Item {
   id: string,
@@ -18,6 +20,7 @@ interface ImageSelectorContainerProps {
 }
 
 interface ImageCardProps {
+  index: number,
   item: Item,
   handleClick: (item: string) => void
 }
@@ -42,13 +45,28 @@ export const getNineItems = (data: any) => {
   return arr
 }
 
-const ImageCard = ({item, handleClick}: ImageCardProps) => {
+const CancelButton = withStyles({
+  root: {
+    backgroundColor: '#fef1d2',
+    margin: '5px'
+  }
+})(Button)
+
+const OkButton = withStyles({
+  root: {
+    backgroundColor: '#f7ad00',
+    color: '#fef1d2',
+    margin: '5px'
+  }
+})(Button)
+
+const ImageCard = ({index, item, handleClick}: ImageCardProps) => {
 
   const { image_url, id } = item
 
   return (
-    <div onClick={() => handleClick(id)} style={{ width: '120px', marginTop: '20px' }}>
-      <img src={image_url} style={{ display: 'bloack', maxWidth: 100, maxHeight: 100, backgroundSize: 'cover' }} />
+    <div onClick={() => handleClick(id)} style={{ width: '220px', height: '220px', padding: '10px', textAlign: 'center' }}>
+      <img src={image_url} style={{ display: 'block', width: '100%', height: '100%', backgroundSize: 'cover' }} />
     </div>
   )
 }
@@ -56,12 +74,14 @@ const ImageCard = ({item, handleClick}: ImageCardProps) => {
 const SelectedImageCard = ({ item, handleRemove }: SelectedImageCardProps) => {
   const { image_url, id } = item
   return (
-    <div style={{ width: '130px', marginTop: '20px', position: 'relative', padding: '15px' }}>
-      <img src={image_url} style={{ display: 'bloack', maxWidth: 100, maxHeight: 100, backgroundSize: 'cover' }} />
+    <div style={{ width: '220px', height: '220px', padding: '10px' }}>
+      <img src={image_url} style={{ display: 'block', width: '100%', height: '100%', backgroundSize: 'cover' }} />
       <Icon type="close" onClick={() => handleRemove(id)} style={{position: 'absolute', top: 0, right: 0 }} />
     </div>
   )
 }
+
+const mapIndexed = addIndex<Item, React.ReactNode>(map)
 
 export const ImageContainer = ({
   setTags
@@ -110,21 +130,28 @@ export const ImageContainer = ({
 
 
   return (
-    <div className="image-selector">
-      <h3>請在下面選出一張你喜歡的圖片</h3>
-      <Button type='default' style={{ marginLeft: '10px' }} disabled={length(abandonedItems) === (250-12)} onClick={handleRefresh}>
-        重整所有圖片
-      </Button>
-      <div className="image-list" style={{ display: 'flex', width: '360px', flexWrap: 'wrap' }}>
-        {map((item: Item) => <ImageCard key={item.image_url} handleClick={handleClick} item={item}/>, getItemsByIds(nineItems))}
+    <div>
+      <div className="image-selector">
+        <h3 style={{ color: '#f7ad00' }}>請在下面選出三張你喜歡的圖片</h3>
+        <CancelButton variant='contained' style={{ marginLeft: '10px' }} disabled={length(abandonedItems) === (250-12)} onClick={handleRefresh}>
+          重整所有圖片
+        </CancelButton>
+        <div className="image-list" style={{ display: 'flex', width: '660px', flexWrap: 'wrap' }}>
+          {mapIndexed((item, index) => <ImageCard index={index} key={item.image_url} handleClick={handleClick} item={item}/>, getItemsByIds(nineItems))}
+        </div>
       </div>
-      <h3>你喜歡的圖片 {`${length(selectedItems)} / 3`}</h3>
-      <div className="selected-image-list" style={{ display: 'flex', width: '390px', flexWrap: 'wrap' }}>
-        {map((item: Item) => <SelectedImageCard key={item.image_url} item={item} handleRemove={handleRemove}/>, getItemsByIds(selectedItems))}
+      <div>
+        <h3 style={{ color: '#f7ad00' }}>選取的照片 {`${length(selectedItems)} / 3`}</h3>
+        <div className="selected-image-list" style={{ display: 'flex', width: '660px', flexWrap: 'wrap' }}>
+          {map((item: Item) => <SelectedImageCard key={item.image_url} item={item} handleRemove={handleRemove}/>, getItemsByIds(selectedItems))}
+        </div>
+        <OkButton variant='contained' disabled={length(selectedItems) !== 3} onClick={handleSubmit}>
+          開始推薦
+        </OkButton>
+        <CancelButton variant='contained' disabled={length(selectedItems) !== 3} onClick={handleRefresh}>
+          重新選擇
+        </CancelButton>
       </div>
-      <Button type='primary' disabled={length(selectedItems) !== 3} onClick={handleSubmit}>
-        開始推薦文章
-      </Button>
     </div>
   )
 }
