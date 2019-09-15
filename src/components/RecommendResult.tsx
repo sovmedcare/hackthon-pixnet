@@ -1,9 +1,19 @@
 import { Button, Table, Tag } from 'antd'
-import { compose, equals, join, length, map } from 'ramda'
+import { compose, join, length, map } from 'ramda'
 import React, { useEffect, useState } from 'react'
 import qs from 'qs'
 
 import './RecommendResult.less'
+
+interface KeywordProps {
+  keyword: string
+}
+
+const Keyword = ({ keyword }: KeywordProps) => {
+  return (
+    <div className='keyword'>{keyword}</div>
+  )
+}
 
 const columns = [
   {
@@ -27,22 +37,23 @@ const columns = [
       }
 
       return (
-        <a onClick={handleCurrentTabLink}>{record.title}</a>
+        <a className='result-title' onClick={handleCurrentTabLink}>{record.title}</a>
       )
     }
   },
   {
     title: "關鍵字",
+    className: 'keyword-column',
     dataIndex: "keyword",
     key: "keyword",
     // @ts-ignore
     render: (text, record) => {
       return (
-        <>
+        <div className='keyword-wrapper'>
           {map(
-            keyword => (<div key={keyword}>{keyword}</div>)
+            keyword => (<Keyword key={keyword} keyword={keyword} />)
           , record.keywords)}
-        </>
+        </div>
       )
     }
   }
@@ -127,9 +138,18 @@ const RecommendResult = (props: RecommendResultProps) => {
         {map(label => (
           <Tag key={label}>{label}</Tag>
         ), selectedTags)}
-        <h3>最適合你的是...</h3>
-        <Button onClick={handleResultClear}>清除搜尋結果</Button>
-        <Table columns={columns} dataSource={dataSource} loading={loading} />
+        <h3>適合你的食記</h3>
+        {/* <Button onClick={handleResultClear}>清除搜尋結果</Button> */}
+        <Table
+          className='result-table'
+          columns={columns}
+          dataSource={dataSource}
+          loading={loading}
+          pagination={{
+            size: 'small'
+          }}
+          showHeader={false}
+        />
       </div>
   )
 }
