@@ -31,7 +31,6 @@
     "ramda": "^0.26.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
-    "react-spinner": "^0.2.7",
     "react-spinners": "^0.6.1",
     "uuid": "^3.3.3"
   },
