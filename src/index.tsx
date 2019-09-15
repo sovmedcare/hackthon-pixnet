@@ -8,13 +8,21 @@ import './index.less'
 import '../node_modules/antd/dist/antd.min.css'
 
 const Index = () => {
-  const [tags, setTags] = useState<string[]>([])
+  const localStorageTags = localStorage.getItem('tags') || '[]'
+  const defaultTags = JSON.parse(localStorageTags)
+
+  const [ isSearching, setIsSearching ] = useState<boolean>(false)
+  const [tags, setTags] = useState<string[]>(defaultTags)
+  const setUpdatedTags = (updatedTags: string[]) => {
+    setTags(updatedTags)
+    localStorage.setItem('tags', JSON.stringify(updatedTags))
+  }
 
   return (
     <div>
       <h1>食字路口</h1>
-      <ImageContainer  setTags={setTags}/>
-      <RecommendResult selectedLabels={tags} />
+      <ImageContainer setIsSearching={setIsSearching} setTags={setUpdatedTags}/>
+      <RecommendResult isSearching={isSearching} setIsSearching={setIsSearching} selectedTags={tags} />
     </div>
   )
 }

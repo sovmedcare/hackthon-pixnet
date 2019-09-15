@@ -1,5 +1,5 @@
-import { Table, Tag } from 'antd'
-import { compose, join, length, map } from 'ramda'
+import { Button, Table, Tag } from 'antd'
+import { compose, equals, join, length, map } from 'ramda'
 import React, { useEffect, useState } from 'react'
 import qs from 'qs'
 
@@ -65,57 +65,71 @@ interface Data {
   title: string
 }
 
-const RecommendResult = (props: { selectedLabels: string[] }) => {
-  const { selectedLabels } = props
-  const [isTouched, setIsTouched] = useState(false)
+interface RecommendResultProps {
+  isSearching: boolean,
+  selectedTags: string[],
+  setIsSearching: (isSearching: boolean) => void
+}
+
+const RecommendResult = (props: RecommendResultProps) => {
+  const { isSearching, selectedTags, setIsSearching } = props
   const [loading, setLoading] = useState(false)
-  const [dataSource, setDataSource] = useState<Data[]>([])
+  
+  const localStorageRecommendedResult = localStorage.getItem('recommendedResult') || '[]'
+  const defaultRecommendedResult = JSON.parse(localStorageRecommendedResult)
+  const [dataSource, setDataSource] = useState<Data[]>(defaultRecommendedResult)
+  const setUpdatedRecommendedResults = (updatedRecommendedResults: Data[]) => {
+    setDataSource(updatedRecommendedResults)
+    localStorage.setItem('recommendedResult', JSON.stringify(updatedRecommendedResults))
+  }
+
+  const handleResultClear = () => {
+    const updatedResult: Data[] = []
+    setUpdatedRecommendedResults(updatedResult)
+  }
 
   const getArticles = async () => {
     const defaultQueryString = qs.stringify(defaultQuery)
     const keyQuery = compose(
       join('&'),
       map(label => `key[]=${label}`)
-    )(selectedLabels)
+    )(selectedTags)
     const query = `${defaultQueryString}&${keyQuery}`
 
     const response = await fetch(`${apiURL}?${query}`)
     const json = await response.json()
 
+    let result: Data[]
     if (!json || json.total === 0) {
-      setDataSource([])
+      result = []
     } else {
-      const result = map(article => ({
+      result = map(article => ({
         link: article && article.link,
         thumbnail: article && article.thumb,
         title: article && article.title,
         keywords: article && article.tags && map(tagInfo => tagInfo && tagInfo.tag, article.tags)
       }), json.articles)
-      setDataSource(result)
     }
     setLoading(false)
+    setIsSearching(false)
+    setUpdatedRecommendedResults(result)
   }
 
   useEffect(() => {
-    if (selectedLabels && length(selectedLabels) > 0) {
+    if (isSearching && selectedTags && length(selectedTags) > 0) {
       setLoading(true)
-      setIsTouched(true)
       getArticles()
     }
-  }, [selectedLabels])
+  }, [selectedTags])
 
   return (
       <div className="recommend-result">
         {map(label => (
           <Tag key={label}>{label}</Tag>
-        ), selectedLabels)}
-        { isTouched && (
-            <>
-              <h3>最適合你的是...</h3>
-              <Table columns={columns} dataSource={dataSource} loading={loading} />
-            </>
-          )
-        }
+        ), selectedTags)}
+        <h3>最適合你的是...</h3>
+        <Button onClick={handleResultClear}>清除搜尋結果</Button>
+        <Table columns={columns} dataSource={dataSource} loading={loading} />
       </div>
   )
 }
