@@ -15,9 +15,6 @@ interface Item {
   image_url: string,
   labels: string[]
 }
-interface ImageSelectorContainerProps {
-  setTags: (tags: string[]) => void
-}
 
 interface ImageCardProps {
   index: number,
@@ -83,18 +80,39 @@ const SelectedImageCard = ({ item, handleRemove }: SelectedImageCardProps) => {
 
 const mapIndexed = addIndex<Item, React.ReactNode>(map)
 
+interface ImageSelectorContainerProps {
+  setIsSearching: (isSearching: boolean) => void,
+  setTags: (tags: string[]) => void
+}
+
 export const ImageContainer = ({
-  setTags
+  setIsSearching,
+  setTags,
 }: ImageSelectorContainerProps) => {
   const [ nineItems, setNineItems ] = useState<string[]>(getNineItems(data))
-  const [ selectedItems, setSelectedItems ] = useState<string[]>([])
-  const [ abandonedItems, setAbandonedItems ] = useState<string[]>([])
+
+  const localStorageSelectedItems = localStorage.getItem('selectedItems') || '[]'
+  const defaultSelectedItems = JSON.parse(localStorageSelectedItems)
+  const [ selectedItems, setSelectedItems ] = useState<string[]>(defaultSelectedItems)
+  const setUpdatedSelectedItems = (updatedSelectedItems: string[]) => {
+    setSelectedItems(updatedSelectedItems)
+    localStorage.setItem('selectedItems', JSON.stringify(updatedSelectedItems))
+  }
+
+  const localStorageAbandonedItems = localStorage.getItem('abandonedItems') || '[]'
+  const defaultAbandonedItems = JSON.parse(localStorageAbandonedItems)
+  const [ abandonedItems, setAbandonedItems ] = useState<string[]>(defaultAbandonedItems)
+  const setUpdatedAbandonedItems = (updatedAbandonedItems: string[]) => {
+    setAbandonedItems(updatedAbandonedItems)
+    localStorage.setItem('abandonedItems', JSON.stringify(updatedAbandonedItems))
+  }
 
   const handleClick = (item: string) => {
     if (length(selectedItems) === 3) {
       return
     }
-    setSelectedItems(append(item, selectedItems))
+    const updatedSelectedItems = append(item, selectedItems)
+    setUpdatedSelectedItems(updatedSelectedItems)
     setNineItems(state => {
       const orginItems = state
       const filteredData = filter((data: Item) => none(equals(data.id), [...nineItems, ...selectedItems, ...abandonedItems]), data)
@@ -106,7 +124,10 @@ export const ImageContainer = ({
   }
 
   const handleSelectedItemsClear = () => {
-    setSelectedItems([])
+    const updatedSelectedItems :string[]  = []
+    setUpdatedSelectedItems(updatedSelectedItems)
+    const updatedTags :string[]  = []
+    setTags(updatedTags)
   }
 
   const handleSubmit = async () => {
@@ -117,19 +138,21 @@ export const ImageContainer = ({
       map((label: string) => categories[label])
     )
     const suggestedTags = getSuggestedTags(rawLabels)
-
+    setIsSearching(true)
     setTags(suggestedTags)
   }
 
   const handleRefresh = () => {
-    setAbandonedItems([...abandonedItems, ...nineItems])
+    const updatedAbandonedItems = [...abandonedItems, ...nineItems]
+    setUpdatedAbandonedItems(updatedAbandonedItems)
     const newNimeItems = getNineItems(filter<Item>(item => none(equals(item.id), [...abandonedItems, ...nineItems, ...selectedItems]), data))
     setNineItems(newNimeItems)
   }
 
   const handleRemove = (item: string) => {
     setSelectedItems(reject(equals(item), selectedItems))
-    setAbandonedItems(append(item, abandonedItems))
+    const updatedAbandonedItems = append(item, abandonedItems)
+    setUpdatedAbandonedItems(updatedAbandonedItems)
   }
 
   return (
