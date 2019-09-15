@@ -1,7 +1,9 @@
-import { Button, Table, Tag } from 'antd'
-import { compose, join, length, map } from 'ramda'
-import React, { useEffect, useState } from 'react'
+import { Table, Tag } from 'antd'
 import qs from 'qs'
+import { compose, join, length, map } from 'ramda'
+// @ts-ignore
+import { GridLoader } from 'react-spinners'
+import React, { useEffect, useState } from 'react'
 
 import './RecommendResult.less'
 
@@ -94,11 +96,6 @@ const RecommendResult = (props: RecommendResultProps) => {
     localStorage.setItem('recommendedResult', JSON.stringify(updatedRecommendedResults))
   }
 
-  const handleResultClear = () => {
-    const updatedResult: Data[] = []
-    setUpdatedRecommendedResults(updatedResult)
-  }
-
   const getArticles = async () => {
     const defaultQueryString = qs.stringify(defaultQuery)
     const keyQuery = compose(
@@ -138,18 +135,34 @@ const RecommendResult = (props: RecommendResultProps) => {
         {map(label => (
           <Tag key={label}>{label}</Tag>
         ), selectedTags)}
-        <h3>適合你的食記</h3>
-        {/* <Button onClick={handleResultClear}>清除搜尋結果</Button> */}
-        <Table
-          className='result-table'
-          columns={columns}
-          dataSource={dataSource}
-          loading={loading}
-          pagination={{
-            size: 'small'
-          }}
-          showHeader={false}
-        />
+        {
+          loading ? (
+            <>
+              <h3>正在為你篩選適合的食記</h3>
+              <div className='loading-wrapper'>
+                <GridLoader
+                  color='#F7AD00'
+                  loading
+                  size={50}
+                />
+              </div>
+            </>
+          ) : (
+            <>
+              <h3>適合你的食記</h3>
+              <Table
+                className='result-table'
+                columns={columns}
+                dataSource={dataSource}
+                loading={loading}
+                pagination={{
+                  size: 'small'
+                }}
+                showHeader={false}
+              />
+            </>
+          )
+        }
       </div>
   )
 }
