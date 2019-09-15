@@ -21,8 +21,13 @@ const columns = [
     key: "title",
     // @ts-ignore
     render: (text, record) => {
+      const url = record.link
+      const handleCurrentTabLink = () => {
+        chrome.tabs.update({ url })
+      }
+
       return (
-        <a href={record.link}>{record.title}</a>
+        <a onClick={handleCurrentTabLink}>{record.title}</a>
       )
     }
   },
@@ -107,7 +112,7 @@ const RecommendResult = (props: { selectedLabels: string[] }) => {
         { isTouched && (
             <>
               <h3>最適合你的是...</h3>
-              <Table columns={columns}  dataSource={dataSource} loading={loading} />
+              <Table columns={columns} dataSource={dataSource} loading={loading} />
             </>
           )
         }

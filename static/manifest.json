@@ -1,13 +1,16 @@
 {
-  "name": "Name of your chrome extension",
-  "description": "Description of your chrome extension.",
+  "name": "DigOut",
+  "description": "Know you better than yourself",
   "version": "0.0.1",
   "manifest_version": 2,
   "browser_action": {
     "default_icon": "images/icon128.png",
     "default_popup": "popup.html"
   },
-  "permissions": [],
+  "permissions": [
+    "activeTab",
+    "tabs"
+  ],
   "background": {
     "scripts": [
       "hot-reload.js",
