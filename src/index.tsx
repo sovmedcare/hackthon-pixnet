@@ -20,7 +20,7 @@ const Index = () => {
 
   return (
     <div>
-      <h1>食字路口</h1>
+      <h1>DigOut</h1>
       <ImageContainer setIsSearching={setIsSearching} setTags={setUpdatedTags}/>
       <RecommendResult isSearching={isSearching} setIsSearching={setIsSearching} selectedTags={tags} />
     </div>
