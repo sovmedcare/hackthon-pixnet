@@ -74,7 +74,7 @@ const ImageCard = ({index, item, handleClick}: ImageCardProps) => {
 const SelectedImageCard = ({ item, handleRemove }: SelectedImageCardProps) => {
   const { image_url, id } = item
   return (
-    <div style={{ width: '220px', height: '220px', padding: '10px' }}>
+    <div style={{ width: '220px', height: '220px', padding: '10px', position: 'relative' }}>
       <img src={image_url} style={{ display: 'block', width: '100%', height: '100%', backgroundSize: 'cover' }} />
       <Icon type="close" onClick={() => handleRemove(id)} style={{position: 'absolute', top: 0, right: 0 }} />
     </div>
@@ -105,6 +105,10 @@ export const ImageContainer = ({
     })
   }
 
+  const handleSelectedItemsClear = () => {
+    setSelectedItems([])
+  }
+
   const handleSubmit = async () => {
     const rawLabels = flatten(map(image => image.labels, getItemsByIds(selectedItems)))
     const getSuggestedTags = compose<string[], string[], string[], string[]>(
@@ -128,7 +132,6 @@ export const ImageContainer = ({
     setAbandonedItems(append(item, abandonedItems))
   }
 
-
   return (
     <div>
       <div className="image-selector">
@@ -148,8 +151,8 @@ export const ImageContainer = ({
         <OkButton variant='contained' disabled={length(selectedItems) !== 3} onClick={handleSubmit}>
           開始推薦
         </OkButton>
-        <CancelButton variant='contained' disabled={length(selectedItems) !== 3} onClick={handleRefresh}>
-          重新選擇
+        <CancelButton variant='contained' disabled={length(selectedItems) !== 3} onClick={handleSelectedItemsClear}>
+          清除已選擇
         </CancelButton>
       </div>
     </div>
