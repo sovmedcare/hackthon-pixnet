@@ -1,8 +1,53 @@
 .recommend-result {
   background: white;
   margin-top: 15px;
+
+  h3 {
+    color: #EA5704;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+}
+
+.result-table {
+  .ant-table-tbody {
+    .ant-table-row:nth-child(odd) {
+      background: #FEF1D2;
+    }
+    .ant-table-row:nth-child(even) {
+      background: #F4F4F4;
+    }
+  }
 }
 
 .result-thumbnail {
   height: 150px;
+}
+
+.result-title {
+  color: #EA5704;
+}
+
+.keyword-column {
+  align-items: center;
+  display: flex;
+  height: 182px;
+  overflow: auto;
+  width: 250px;
+}
+
+.keyword-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  height: 150px;
+  overflow: auto;
+  width: 100%;
+}
+.keyword {
+  background-color: #F7AD00;
+  border-radius: 10px;
+  color: white;
+  margin: 5px;
+  padding: 10px;
+  text-align: center;
 }
