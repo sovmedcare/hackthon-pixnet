@@ -1,8 +1,8 @@
 {
   "name": "DigOut",
   "description": "Know you better than yourself",
-  "version": "0.0.1",
-  "manifest_version": 2,
+  "version": "1.0.0",
+  "manifest_version": 3,
   "browser_action": {
     "default_icon": "images/digout.png",
     "default_popup": "popup.html"
