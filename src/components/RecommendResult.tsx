@@ -56,7 +56,7 @@ const columns = [
       return (
         <div>
           {map(
-            keyword => (<Tag key={keyword} style={{ fontSize: 16, lineHeight: '24px', marginBottom: 8 }} color="orange">{keyword}</Tag>)
+            keyword => (<Tag key={keyword} style={{ fontSize: 14, lineHeight: '20px', marginBottom: 8 }} color="orange">{keyword}</Tag>)
           , record.keywords)}
         </div>
       )
