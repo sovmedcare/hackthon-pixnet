@@ -2147,16 +2147,6 @@
   },
   {
     "worker": "Jason",
-    "image_url": "https://www.flickr.com/photos/84319124@N00/32022985490/",
-    "labels": [
-      "日式",
-      "拉麵",
-      "重口味"
-    ],
-    "id": "03c373ac-bb2e-4643-8a96-33049a526a4c"
-  },
-  {
-    "worker": "Jason",
     "image_url": "https://i1.achangpro.com/img.angelala.tw/20170805065841_32.jpg",
     "labels": [
       "韓式",
@@ -2387,16 +2377,6 @@
   },
   {
     "worker": "Jason",
-    "image_url": "https://www.pexels.com/photo/pan-holding-pilsner-inside-bar-1267360/",
-    "labels": [
-      "酒",
-      "精釀啤酒",
-      "聚餐"
-    ],
-    "id": "1378d509-bfb7-4be4-85e3-e9783f532065"
-  },
-  {
-    "worker": "Jason",
     "image_url": "https://images.pexels.com/photos/941864/pexels-photo-941864.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
     "labels": [
       "酒吧",
@@ -2404,16 +2384,6 @@
       "夜生活"
     ],
     "id": "e8398328-fbef-44b0-ac4c-795209b93cf2"
-  },
-  {
-    "worker": "Jason",
-    "image_url": "https://www.pexels.com/photo/black-signage-1474157/",
-    "labels": [
-      "小吃",
-      "宵夜",
-      "雞排"
-    ],
-    "id": "4ebee685-a0df-47fa-9d23-ad07d9531b6f"
   },
   {
     "worker": "Jason",
