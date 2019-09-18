@@ -34,12 +34,15 @@ const columns = [
     // @ts-ignore
     render: (text, record) => {
       const url = record.link
-      const handleCurrentTabLink = () => {
-        chrome.tabs.update({ url })
-      }
 
       return (
-        <a className='result-title' onClick={handleCurrentTabLink}>{record.title}</a>
+        <a
+          className='result-title'
+          href={url}
+          target='_blank'
+        >
+          {record.title}
+        </a>
       )
     }
   },
