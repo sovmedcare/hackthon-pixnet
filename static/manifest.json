@@ -7,9 +7,6 @@
     "default_icon": "images/digout.png",
     "default_popup": "popup.html"
   },
-  "permissions": [
-    "activeTab"
-  ],
   "background": {
     "scripts": [
       "hot-reload.js",
