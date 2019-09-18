@@ -1,7 +1,7 @@
-import { Icon } from 'antd'
+import { Icon, Button as AntdButton } from 'antd'
 import { withStyles } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
-import { addIndex, equals, findIndex, flatten, isNil, length, map, reject, update, compose, none, filter, any, append, uniq } from 'ramda'
+import { addIndex, equals, findIndex, flatten, isNil, length, map, reject, update, compose, none, filter, any, append, uniq, take, find } from 'ramda'
 import React, { useState } from 'react'
 
 import data from '../../static/food_merged_with_id.json'
@@ -28,6 +28,17 @@ interface SelectedImageCardProps {
 }
 
 const getItemsByIds = (ids: string[]): Item[] => filter<Item>((item) => any(equals(item.id), ids), data)
+
+const shuffle = (a: any) => {
+  var j, x, i;
+  for (i = a.length; i; i--) {
+      j = Math.floor(Math.random() * i);
+      x = a[i - 1];
+      a[i - 1] = a[j];
+      a[j] = x;
+  }
+  return a
+}
 
 export const getRandomItem = (data: any) => data[Math.floor(Math.random() * data.length)].id
 
@@ -109,6 +120,7 @@ export const ImageContainer = ({
   setTags,
 }: ImageSelectorContainerProps) => {
   const [ nineItems, setNineItems ] = useState<string[]>(getNineItems(data))
+  const [ isTest, setIsTest ] = useState(false)
 
   const localStorageSelectedItems = localStorage.getItem('selectedItems') || '[]'
   const defaultSelectedItems = JSON.parse(localStorageSelectedItems)
@@ -157,8 +169,12 @@ export const ImageContainer = ({
       map((label: string) => categories[label])
     )
     const suggestedTags = getSuggestedTags(rawLabels)
+    const copySuggestedTags = take(9, suggestedTags)
+    const randomSuggestedTags = shuffle(copySuggestedTags)
+    const limitedSuggestedTags = take(3, randomSuggestedTags)
+    const processTags = isTest ? limitedSuggestedTags : suggestedTags
     setIsSearching(true)
-    setTags(suggestedTags)
+    setTags(processTags as any)
   }
 
   const handleRefresh = () => {
@@ -174,6 +190,8 @@ export const ImageContainer = ({
     setUpdatedAbandonedItems(updatedAbandonedItems)
   }
 
+  const hiddenCharacter = isTest ? '.' : ''
+
   return (
     <div>
       <div className="image-selector">
@@ -186,7 +204,7 @@ export const ImageContainer = ({
         </div>
       </div>
       <div>
-        <h3 style={{ color: '#f7ad00' }}>選擇的圖片： {`${length(selectedItems)} / 3`}</h3>
+        <h3 style={{ color: '#f7ad00' }}>選擇的圖片{hiddenCharacter}： {`${length(selectedItems)} / 3`}</h3>
         <div className="selected-image-list" style={{ display: 'flex', width: '660px', flexWrap: 'wrap' }}>
           {map((item: Item) => <SelectedImageCard key={item.image_url} item={item} handleRemove={handleRemove}/>, getItemsByIds(selectedItems))}
         </div>
@@ -196,6 +214,7 @@ export const ImageContainer = ({
         <OkButton variant='contained' disabled={length(selectedItems) !== 3} onClick={handleSubmit}>
           開始推薦
         </OkButton>
+        <AntdButton onClick={() => setIsTest(!isTest)} style={{ opacity: 0 }}>t</AntdButton>
       </div>
     </div>
   )
