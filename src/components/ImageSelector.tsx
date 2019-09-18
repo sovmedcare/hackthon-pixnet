@@ -216,7 +216,7 @@ export const ImageContainer = ({
         <CancelButton variant='contained' disabled={length(selectedItems) !== 3} onClick={handleSelectedItemsClear}>
           取消選取
         </CancelButton>
-        <OkButton variant='contained' disabled={length(selectedItems) !== 3} onClick={handleSubmit}>
+        <OkButton variant='contained' disabled={false} onClick={handleSubmit}>
           開始推薦
         </OkButton>
         <AntdButton onClick={() => setIsTest(!isTest)} style={{ opacity: 0 }}>t</AntdButton>

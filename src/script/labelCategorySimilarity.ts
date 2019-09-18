@@ -32,7 +32,7 @@ const run = async () => {
       }, partOfLabels)
     )
 
-    await saveJSON(result, `mappgings/mapping${sectionIndex}`)
+    await saveJSON(result, `mappings/mapping${sectionIndex}`)
   }
 }
 
