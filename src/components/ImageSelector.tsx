@@ -70,7 +70,7 @@ const ImageCard = ({index, item, handleClick}: ImageCardProps) => {
   const { image_url, id } = item
 
   return (
-    <div onClick={() => handleClick(id)} style={{ width: '220px', height: '220px', padding: '10px', textAlign: 'center' }}>
+    <div onClick={() => handleClick(id)} style={{ width: '150px', height: '150px', margin: '0 16px 16px 0', textAlign: 'center', cursor: 'pointer'}}>
       <img src={image_url} style={{ display: 'block', width: '100%', height: '100%', backgroundSize: 'cover' }} />
     </div>
   )
@@ -79,7 +79,7 @@ const ImageCard = ({index, item, handleClick}: ImageCardProps) => {
 const SelectedImageCard = ({ item, handleRemove }: SelectedImageCardProps) => {
   const { image_url, id } = item
   return (
-    <div style={{ width: '220px', height: '220px', padding: '10px', position: 'relative' }}>
+    <div style={{ width: '150px', height: '150px', margin: '0 16px 16px 0', position: 'relative' }}>
       <img src={image_url} style={{ display: 'block', width: '100%', height: '100%', backgroundSize: 'cover' }} />
       <Icon
         onClick={() => handleRemove(id)}
@@ -177,10 +177,15 @@ export const ImageContainer = ({
   return (
     <div>
       <div className="image-selector">
-        <h3 style={{ color: '#f7ad00' }}>請在九宮格中選出偏好的食物圖片</h3>
-        <CancelButton variant='contained' style={{ marginLeft: '10px' }} disabled={length(abandonedItems) === (250-12)} onClick={handleRefresh}>
-          重整所有圖片
-        </CancelButton>
+        <div style={{ display: 'inline-block', marginTop: 8 }}>
+          <h3 style={{ color: '#f7ad00' }}>
+            請在九宮格中選出偏好的食物圖片
+            <CancelButton variant='contained' disabled={length(abandonedItems) === (250-12)} onClick={handleRefresh}>
+              重整所有圖片
+            </CancelButton>
+          </h3>
+          
+        </div>
         <div className="image-list" style={{ display: 'flex', width: '660px', flexWrap: 'wrap' }}>
           {mapIndexed((item, index) => <ImageCard index={index} key={item.image_url} handleClick={handleClick} item={item}/>, getItemsByIds(nineItems))}
         </div>

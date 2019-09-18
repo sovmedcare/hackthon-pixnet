@@ -54,9 +54,9 @@ const columns = [
     // @ts-ignore
     render: (text, record) => {
       return (
-        <div className='keyword-wrapper'>
+        <div>
           {map(
-            keyword => (<Keyword key={keyword} keyword={keyword} />)
+            keyword => (<Tag key={keyword} style={{ fontSize: 16, lineHeight: '24px', marginBottom: 8 }} color="orange">{keyword}</Tag>)
           , record.keywords)}
         </div>
       )
@@ -149,10 +149,12 @@ const RecommendResult = (props: RecommendResultProps) => {
                   size={50}
                 />
               </div>
+              <br />
+              <br />
             </>
           ) : (
             <>
-              <h3>適合你的食記</h3>
+              <h3>你可能會喜歡的食記</h3>
               <Table
                 className='result-table'
                 columns={columns}

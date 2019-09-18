@@ -30,7 +30,7 @@ const Index = () => {
 
   return (
     <div>
-      <h1>DigOut</h1>
+      <div className='title'>DigOut</div>
       <ImageContainer setIsSearching={setIsSearching} setTags={setUpdatedTags}/>
       <RecommendResult isSearching={isSearching} setIsSearching={setIsSearching} selectedTags={tags} />
     </div>
